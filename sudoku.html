@@ -1,0 +1,597 @@
+<html>
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+	<!-- Begin Inspectlet JS Code -->
+<script type="text/javascript" id="inspectletjs">
+(function() {
+var insp_ab_loader = true; // set this boolean to false to disable the A/B testing loader
+window.__insp = window.__insp || [];
+__insp.push(['wid', 1352259143]);
+var ldinsp = function(){
+if(typeof window.__inspld != "undefined") return; window.__inspld = 1; var insp = document.createElement('script'); insp.type = 'text/javascript'; insp.async = true; insp.id = "inspsync"; insp.src = ('https:' == document.location.protocol ? 'https' : 'http') + '://cdn.inspectlet.com/inspectlet.js?wid=1352259143&r=' + Math.floor(new Date().getTime()/3600000); var x = document.getElementsByTagName('script')[0]; x.parentNode.insertBefore(insp, x);if(typeof insp_ab_loader != "undefined" && insp_ab_loader){ var adlt = function(){ var e = document.getElementById('insp_abl'); if(e){ e.parentNode.removeChild(e); __insp.push(['ab_timeout']); }}; var adlc = "body{ visibility: hidden !important; }"; var adln = typeof insp_ab_loader_t != "undefined" ? insp_ab_loader_t : 1200; insp.onerror = adlt; var abti = setTimeout(adlt, adln); window.__insp_abt = abti; var abl = document.createElement('style'); abl.id = "insp_abl"; abl.type = "text/css"; if(abl.styleSheet) abl.styleSheet.cssText = adlc; else abl.appendChild(document.createTextNode(adlc)); document.head.appendChild(abl); } };
+setTimeout(ldinsp, 0);
+})();
+</script>
+<!-- End Inspectlet JS Code -->
+
+
+    <style>
+        
+        .num-choose {
+            border: 1px solid #000000; 
+            border-radius: 5%;
+            width: 50px;
+            height: 50px;
+            font-size: 28pt;
+            text-align: center;
+            vertical-align: middle;   
+            margin: 16px;
+            color: white;
+        }
+        #lastMove {
+            display: inline-block;
+            margin-right: 10px;
+           
+        }
+        /*.num-choose:hover {
+            color: purple;
+        }*/
+        .disabled {
+            pointer-events:none
+        }
+        .state {
+            color: black;
+        }
+        .correct {
+            color: rgb(37, 202, 37);
+        }
+        .incorrect {
+            color: rgb(228, 22, 22);
+        }
+        table, th, td {
+            border: 1px solid #322A26;
+         }
+        td {
+            width: 60px;
+            height: 60px;
+            font-size: 28pt;
+            text-align: center;
+        }
+        table {
+            width: 200px;
+            height: 200px;
+        }
+        /* Create two unequal columns that floats next to each other */
+        .column {
+            float: left;
+            padding: 10px;
+        }
+
+        .left {
+            width: 45%;
+        }
+
+        /* Clear floats after the columns */
+        .row:after {
+            content: "";
+            display: table;
+            clear: both;
+        }
+    </style>
+
+    <h1>Sudoku!</h1>
+
+    <select id="difficultyLevel">
+            <option value="1">1</option>
+            <option value="2">2</option>
+            <option value="3">3</option>
+            <option value="4">4</option>
+            <option value="5">5</option>
+        </select>
+    <button onClick="newGame()">New Game</button><br>
+    <p id="lastMove">Last Move: </p>
+    <button id="hint" onClick="getHint()">Hint</button>
+    <br>
+    <div class="row">
+        <table class="column left">
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox1" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox2" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox3" onClick="boxClicked(this)">
+        
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox10" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox11" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox12" onClick="boxClicked(this)">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox19" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox20" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox21" onClick="boxClicked(this)">
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox4" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox5" onClick="boxClicked(this)">
+                        
+                            </td>
+                            <td id="numBox6" onClick="boxClicked(this)">
+                            
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox13" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox14" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox15" onClick="boxClicked(this)">
+                            
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox22" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox23" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox24" onClick="boxClicked(this)">
+                            
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox7" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox8" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox9" onClick="boxClicked(this)">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox16" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox17" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox18" onClick="boxClicked(this)">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox25" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox26" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox27" onClick="boxClicked(this)">
+                            
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>   
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox28" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox29" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox30" onClick="boxClicked(this)">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox37" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox38" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox39" onClick="boxClicked(this)">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox46" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox47" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox48" onClick="boxClicked(this)">
+                            
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox31" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox32" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox33" onClick="boxClicked(this)">
+                            
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox40" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox41" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox42" onClick="boxClicked(this)">
+                            
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox49" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox50" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox51" onClick="boxClicked(this)">
+                                
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox34" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox35" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox36" onClick="boxClicked(this)">
+                            
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox43" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox44" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox45" onClick="boxClicked(this)">
+                                
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox52" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox53" onClick="boxClicked(this)">
+                                
+                            </td>
+                            <td id="numBox54" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>          
+            </tr>   
+            <tr>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox55" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox56" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox57" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox64" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox65" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox66" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox73" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox74" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox75" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox58" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox59" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox60" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox67" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox68" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox69" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox76" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox77" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox78" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+                <td>
+                    <table>
+                        <tr>
+                            <td id="numBox61" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox62" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox63" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox70" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox71" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox72" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                        <tr>
+                            <td id="numBox79" onClick="boxClicked(this)">
+
+                            </td>
+                            <td id="numBox80" onClick="boxClicked(this)">
+                            
+                            </td>
+                            <td id="numBox81" onClick="boxClicked(this)">
+
+                            </td>
+                        </tr>
+                    </table>
+                </td>          
+            </tr>   
+        </table>
+        <div class="column">
+            <div id="selectedNumber1" class="num-choose" onClick="selectNumber(this)">1</div>
+            <div id="selectedNumber2" class="num-choose" onClick="selectNumber(this)">2</div>
+            <div id="selectedNumber3" class="num-choose" onClick="selectNumber(this)">3</div>
+            <div id="selectedNumber4" class="num-choose" onClick="selectNumber(this)">4</div>
+            <div id="selectedNumber5" class="num-choose" onClick="selectNumber(this)">5</div>
+            <div id="selectedNumber6" class="num-choose" onClick="selectNumber(this)">6</div>
+            <div id="selectedNumber7" class="num-choose" onClick="selectNumber(this)">7</div>
+            <div id="selectedNumber8" class="num-choose" onClick="selectNumber(this)">8</div>
+            <div id="selectedNumber9" class="num-choose" onClick="selectNumber(this)">9</div>
+        </div>
+    </div>
+
+    <script>
+        var incorrectMoves = 0;
+        var lastMove = ""; 
+        var setNumber = "";
+        const COLOR_BUTTON_UNPRESSED = "rgb(156, 163, 219)";
+        const COLOR_BUTTON_PRESSED = "rgb(69, 75, 102)";
+        var numberIds = ["selectedNumber1", "selectedNumber2", "selectedNumber3", "selectedNumber4", "selectedNumber5", "selectedNumber6", "selectedNumber7", "selectedNumber8", "selectedNumber9"];
+        
+        window.onload = function() {
+            pageLoad();
+        };
+
+        function pageLoad() {
+            numberIds.forEach(index => {
+                tempElement = document.getElementById(index);
+                tempElement.style.backgroundColor = COLOR_BUTTON_UNPRESSED;
+            });
+
+            $.ajax({ 
+                url: 'sudoku.php',
+                data: {action: 'getCurrentGame'},
+                type: 'POST',
+                success: function(data) {
+                    populateBoard(data);
+                    getLastMove();
+                }
+            });
+                   
+        }
+
+        function getHint() {
+            $.ajax({ 
+                url: 'sudoku.php',
+                data: {action: 'getHint'},
+                type: 'POST',
+                success: function(data) {
+                    board = data.split(" ");
+                    var correctNum = board[2];
+
+                    id = getElementIdByArray(board);
+                    element = document.getElementById(id);
+                    element.innerHTML = correctNum;
+                    element.classList.add("correct");
+                    element.classList.add("disabled");
+
+                    getLastMove();
+                
+                }
+            });
+        
+        }
+
+        function getElementIdByArray(board) {
+            var row = parseInt(board[0], 10);
+            var col = parseInt(board[1], 10);
+            var num = (row * 9) + col + 1;
+            return "numBox" + num.toString();
+        }
+    
+
+        function selectNumber(element) {
+            
+            if(element.style.backgroundColor == COLOR_BUTTON_UNPRESSED) {
+                numberIds.forEach(entry => {
+                    tempElement = document.getElementById(entry);
+                    tempElement.style.backgroundColor = COLOR_BUTTON_UNPRESSED; 
+                });
+                element.style.backgroundColor = COLOR_BUTTON_PRESSED;
+                this.setNumber = element.id.substr(element.id.length - 1);
+            } else {
+                element.style.backgroundColor = COLOR_BUTTON_UNPRESSED;
+                this.setNumber = "";
+            }
+    
+        }
+
+        function boxClicked(element) {
+            document.getElementById(element.id).innerHTML = this.setNumber;
+            var id = element.id.substr(6);
+
+            $.ajax({ 
+                url: 'sudoku.php',
+                data: {action: 'updateGame', number: this.setNumber, box: id},
+                type: 'POST',
+                success: function(data) {
+                    if(data == "correct") {
+                        element.className = "";
+                        element.classList.add("correct");
+                        element.classList.add("disabled");
+                        getLastMove();
+                    } else {
+                        incorrectMoves++;
+                        //console.log("test: ", incorrectMoves);
+                        element.className = "";
+                        element.classList.add("incorrect");
+                    }
+                }
+            });
+        }
+
+        function populateBoard(data) {
+            var responseArry = data.split(" ");
+            for(var i = 0; i < 81; i++) {
+                var id = "numBox" + (i + 1);
+                var element = document.getElementById(id);
+                if(responseArry[i] == 0) {
+                    element.innerHTML = "";
+                    element.className = "";
+                } else {
+                    element.innerHTML = responseArry[i];
+                    element.className = "";
+                    element.classList.add("state");
+                    element.classList.add("disabled");                            
+                }
+                
+            }   
+        }
+
+        function getLastMove() {
+            var lastMoveElement = document.getElementById("lastMove");
+
+            $.ajax({
+                url: 'sudoku.php',
+                data: {action: 'getlastMove'},
+                type: 'POST',
+                success: function(data) {
+                    lastMoveElement.innerHTML = `Last move: ${data}`;
+                }
+            })
+        }
+
+        function newGame() {
+            var dropDown = document.getElementById("difficultyLevel");
+            var difficulty = dropDown.options[dropDown.selectedIndex].value;
+
+            $.ajax({ 
+                url: 'sudoku.php',
+                data: {action: 'createNewGame', d: difficulty},
+                type: 'POST',
+                success: function(data) {
+                    populateBoard(data);
+                    getLastMove();
+                }
+            });
+        }
+       
+    </script>
+
+</html>
